@@ -1,0 +1,64 @@
+@font-face {
+  font-family: "iconfont"; /* Project id 3775504 */
+  src: url('./iconfont/iconfont.woff2?t=1668608916321') format('woff2'),
+       url('./iconfont/iconfont.woff?t=1668608916321') format('woff'),
+       url('./iconfont/iconfont.ttf?t=1668608916321') format('truetype');
+}
+
+.iconfont {
+  font-family: "iconfont" !important;
+  font-size: 16px;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-bofang:before {
+  content: "\e87c";
+}
+
+.icon-zanting:before {
+  content: "\e629";
+}
+
+.icon-guanbi:before {
+  content: "\eaf2";
+}
+
+.icon-quanping_o:before {
+  content: "\eb99";
+}
+
+.icon-shengyin_shiti:before {
+  content: "\eca5";
+}
+
+*{
+  margin: 0;
+  padding: 0;
+}
+ul{
+  list-style: none;
+}
+img{
+  display: block;
+}
+body{
+  height: 2000px;
+  background: #f5f5f5;
+}
+.clearfix::after{
+  content: "";
+  display: block;
+  clear: both;
+}
+#list{ width: 1226px;margin: 20px auto; }
+#list .list-wrap{ width: 1240px;}
+#list .list-wrap li{ width: 296px;float: left;margin-right: 14px;height: auto;background-color: white;cursor: pointer;}
+#list .list-wrap li:hover i{ background-color: #ff6700;}
+#list .list-wrap img{ width: 100%;height: 100%;}
+#list .list-wrap div{position: relative;}
+#list .list-wrap i{position: absolute;bottom: 10px;left: 19px;border: 2px rgb(29, 15, 15) solid;border-radius: 10px;width: 32px;
+height: 20px;line-height: 20px; text-align: center;
+}
+#list .list-wrap h3{font-size: 12px; text-align: center; padding: 30px 0;}

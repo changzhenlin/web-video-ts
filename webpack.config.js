@@ -16,7 +16,7 @@ module.exports = {
     open: true
   },
   resolve: {
-    extensions: ['.ts', '.js', '.json ']
+    extensions: ['.ts', '.js', '.json', '.css', '.scss']
   },
   module: {
     rules: [
@@ -25,7 +25,21 @@ module.exports = {
         use: [
           'style-loader',
           'css-loader'
-        ]
+        ],
+        exclude: [path.resolve(__dirname, 'src/components')]
+      },
+      {
+        test: /\.css$/,
+        use: [
+          'style-loader',
+          {
+            loader: 'css-loader',
+            options: {
+              modules: true
+            }
+          }
+        ],
+        include: [path.resolve(__dirname, 'src/components')]
       },
       {
         test: /\.(woff|woff2|truetype|gif|ico|svg)$/,
@@ -34,7 +48,7 @@ module.exports = {
         ]
       },
       {
-        test: '/.ts$/',
+        test: /.ts$/,
         use: 'ts-loader',
         exclude: /node_modules/
       }
