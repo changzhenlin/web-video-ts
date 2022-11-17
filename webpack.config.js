@@ -3,7 +3,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const {CleanWebpackPlugin} = require('clean-webpack-plugin');
 
 module.exports = {
-  entry: './src/main.js',
+  entry: './src/main.ts',
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: "main.js"
@@ -14,6 +14,9 @@ module.exports = {
       directory: path.join(__dirname, 'dist'),
     },
     open: true
+  },
+  resolve: {
+    extensions: ['.ts', '.js', '.json ']
   },
   module: {
     rules: [
@@ -29,6 +32,11 @@ module.exports = {
         use: [
           'file-loader'
         ]
+      },
+      {
+        test: '/.ts$/',
+        use: 'ts-loader',
+        exclude: /node_modules/
       }
     ]
   },
