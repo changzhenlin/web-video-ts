@@ -1,6 +1,7 @@
 // import './a.css'
 import './main.css'
 import popup from './components/popup/popup'
+import video from './components/video/video'
 
 let listItem: NodeListOf<Element> = document.querySelectorAll('#list li');
 
@@ -19,7 +20,11 @@ for(let i = 0; i < listItem.length; i++) {
       title,
       mask: true,
       content: (container) => {
-        console.log(container)
+        // console.log(container)
+        video({
+          url,
+          elem:container
+        })
       }
     });
   });
