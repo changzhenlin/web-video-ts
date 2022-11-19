@@ -71,14 +71,86 @@ class Video implements Icomponent {
     let videoContent = this.tempContainer.querySelector(`.${styles['default']['video-content']}`) as HTMLVideoElement;
     let videoControls = this.tempContainer.querySelector(`.${styles['default']['video-controls']}`) as HTMLElement;
     let videoPlay = this.tempContainer.querySelector(`.${styles['default']['video-controls']} i`) as HTMLElement;
-
+    let videoTime = this.tempContainer.querySelectorAll(`.${styles['default']['video-time']} span`) as NodeListOf<HTMLElement>;
+    let videoFull = this.tempContainer.querySelector(`.${styles['default']['video-full']} i`) as HTMLElement;
+    let videoProgress = this.tempContainer.querySelectorAll(`.${styles['default']['video-progress']} div`) as NodeListOf<HTMLElement>;
+    let videoVolprogress = this.tempContainer.querySelectorAll(`.${styles['default']['video-volprogress']} div`) as NodeListOf<HTMLElement>;
+    let timer;
+    
+    videoContent.volume = 0.5;
+    if (this.settings.autoplay) {
+      timer = setInterval(palying, 1000);
+      videoContent.play();
+    }
+    function palying() { 
+      videoTime[0].innerHTML = this.formatTime(videoContent.currentTime);
+      let scale = videoContent.currentTime / videoContent.duration;
+      let scaleSuc = videoContent.buffered.end(0) / videoContent.duration;
+      videoProgress[0].style.width = scale * 100 + '%';
+      videoProgress[1].style.width = scaleSuc * 100 + '%';
+      videoProgress[2].style.left = scale * 100 + '%';
+    }
     videoContent.addEventListener('canplay', () => {
+      videoTime[1].innerHTML = this.formatTime(videoContent.duration);
     })
     videoContent.addEventListener('play', () => {
       videoPlay.className =  'iconfont icon-zanting';
+      timer = setInterval(palying.bind(this), 1000);
     })
     videoContent.addEventListener('pause', () => {
       videoPlay.className =  'iconfont icon-bofang';
+      clearInterval(timer);
+    })
+    videoFull.addEventListener('click', () => {
+      videoContent.requestFullscreen();
+    })
+    videoProgress[2].addEventListener('mousedown', function (e:MouseEvent){
+      let downX = e.pageX;
+      let downL = this.offsetLeft;
+      document.onmousemove = (e:MouseEvent) => {
+        let scale = (downL + (e.pageX - downX) + 8) / videoProgress[0].offsetWidth;
+        if (scale < 0) {
+          scale = 0;
+        } else if (scale > 1) {
+          scale = 1;
+        }
+        videoProgress[0].style.width = scale * 100 + '%';
+        videoProgress[2].style.left = scale * 100 + '%';
+        this.style.left = scale * 100 + '%';
+        videoContent.currentTime = scale * videoContent.duration;
+
+        document.onmouseup = () => {
+          document.onmouseup = document.onmousemove = null;
+        }
+        e.preventDefault();
+      }
+      
+    })
+    videoVolprogress[1].addEventListener('mousedown', function (e:MouseEvent){
+      let downX = e.pageX;
+      let downL = this.offsetLeft;
+      document.onmousemove = (e:MouseEvent) => {
+        let scale = (downL + (e.pageX - downX) + 8) / videoVolprogress[0].offsetWidth;
+        if (scale < 0) {
+          scale = 0;
+        } else if (scale > 1) {
+          scale = 1;
+        }
+        videoVolprogress[0].style.width = scale * 100 + '%';
+        this.style.left = scale * 100 + '%';
+        videoContent.volume = scale;
+
+        document.onmouseup = () => {
+          document.onmouseup = document.onmousemove = null;
+        }
+        e.preventDefault();
+      }
+    })
+    this.tempContainer.addEventListener('mouseenter', () => {
+      videoControls.style.bottom = '0';
+      })
+    this.tempContainer.addEventListener('mouseleave', () => {
+      videoControls.style.bottom = '-50px';
     })
     videoPlay.addEventListener('click', () => {
       if (videoContent.paused) {
@@ -87,7 +159,17 @@ class Video implements Icomponent {
         videoContent.pause();
       }
     })
+    
   };
+  
+  formatTime(time: number) {
+    let minute = Math.floor(time / 60);
+    let second = Math.floor(time % 60);
+    return `${this.setZero(minute)}:${this.setZero(second)}`;
+  }
+  setZero(n: number) {
+    return n < 10 ? '0' + n : '' + n;
+  }
 }
 
 export default video; 

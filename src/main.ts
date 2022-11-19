@@ -23,7 +23,8 @@ for(let i = 0; i < listItem.length; i++) {
         // console.log(container)
         video({
           url,
-          elem:container
+          elem:container,
+          autoplay: true
         })
       }
     });
